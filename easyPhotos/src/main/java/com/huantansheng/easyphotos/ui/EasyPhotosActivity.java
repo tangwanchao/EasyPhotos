@@ -73,6 +73,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 public class EasyPhotosActivity extends AppCompatActivity implements AlbumItemsAdapter.OnClickListener, PhotosAdapter.OnClickListener, AdListener, View.OnClickListener {
@@ -211,21 +212,23 @@ public class EasyPhotosActivity extends AppCompatActivity implements AlbumItemsA
     }
 
     protected String[] getNeedPermissions() {
+        List<String> list = new ArrayList<>();
         if (Setting.isShowCamera) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                return new String[]{Manifest.permission.CAMERA,
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                        Manifest.permission.READ_EXTERNAL_STORAGE};
-            }
-            return new String[]{Manifest.permission.CAMERA,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE};
-        } else {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                return new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                        Manifest.permission.READ_EXTERNAL_STORAGE};
-            }
-            return new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
+            list.add(Manifest.permission.CAMERA);
         }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (Setting.isOnlyVideo()){
+                list.add(Manifest.permission.READ_MEDIA_VIDEO);
+            } else if (!Setting.showVideo) {
+                list.add(Manifest.permission.READ_MEDIA_IMAGES);
+            }else{
+                list.add(Manifest.permission.READ_MEDIA_IMAGES);
+                list.add(Manifest.permission.READ_MEDIA_VIDEO);
+            }
+        } else {
+            list.add(Manifest.permission.READ_EXTERNAL_STORAGE);
+        }
+        return list.toArray(new String[0]);
     }
 
 

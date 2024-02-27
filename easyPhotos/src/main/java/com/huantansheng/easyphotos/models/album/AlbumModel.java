@@ -7,9 +7,9 @@ import android.content.Context;
 import android.database.Cursor;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.provider.MediaStore;
 import android.text.TextUtils;
-import android.util.Log;
 
 import androidx.core.content.PermissionChecker;
 
@@ -64,11 +64,28 @@ public class AlbumModel {
 
     public void query(Context context, final CallBack callBack) {
         final Context appCxt = context.getApplicationContext();
-        if (PermissionChecker.checkSelfPermission(context,
-                Manifest.permission.READ_EXTERNAL_STORAGE) != PermissionChecker.PERMISSION_GRANTED) {
+        boolean hasPermission = true;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            boolean hasImagePermission = PermissionChecker.checkSelfPermission(context,
+                    Manifest.permission.READ_MEDIA_IMAGES) == PermissionChecker.PERMISSION_GRANTED;
+            boolean hasVideoPermission = PermissionChecker.checkSelfPermission(context,
+                    Manifest.permission.READ_MEDIA_VIDEO) == PermissionChecker.PERMISSION_GRANTED;
+            if (Setting.isOnlyVideo()) {
+                hasPermission = hasVideoPermission;
+            } else if (!Setting.showVideo) {
+                hasPermission = hasImagePermission;
+            } else {
+                hasPermission = hasImagePermission && hasVideoPermission;
+            }
+        } else {
+            hasPermission = PermissionChecker.checkSelfPermission(context,
+                    Manifest.permission.READ_EXTERNAL_STORAGE) == PermissionChecker.PERMISSION_GRANTED;
+        }
+        if (!hasPermission) {
             if (null != callBack) callBack.onAlbumWorkedCallBack();
             return;
         }
+
         canRun = true;
         new Thread(new Runnable() {
             @Override
@@ -295,8 +312,8 @@ public class AlbumModel {
                 ArrayList<Photo> tempList = new ArrayList<>(photoSize);
                 for (int i = 0; i < selectSize; i++) {
                     for (int j = 0; j < photoSize; j++) {
-                        if (Result.photos.get(j).path.equals(Setting.selectedPhotos.get(i).path)){
-                            tempList.add(i,Result.photos.get(j));
+                        if (Result.photos.get(j).path.equals(Setting.selectedPhotos.get(i).path)) {
+                            tempList.add(i, Result.photos.get(j));
                         }
                     }
                 }
