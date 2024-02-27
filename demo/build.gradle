@@ -37,7 +37,7 @@ dependencies {
         exclude group: "com.android.support"
     }
     annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
-    //检测内存泄漏
-    debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.5.4'
-    releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
+    // 检测内存泄漏
+    // debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.5.4'
+    // releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
 }
