@@ -6,7 +6,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -29,7 +28,6 @@ import androidx.recyclerview.widget.SnapHelper;
 
 import com.google.android.material.navigation.NavigationView;
 import com.huantansheng.easyphotos.EasyPhotos;
-import com.huantansheng.easyphotos.callback.PuzzleCallback;
 import com.huantansheng.easyphotos.callback.SelectCallback;
 import com.huantansheng.easyphotos.constant.Type;
 import com.huantansheng.easyphotos.models.album.entity.Photo;
@@ -361,7 +359,6 @@ public class SampleActivity extends AppCompatActivity
                 EasyPhotos.createAlbum(this, true, false, GlideEngine.getInstance())
                         .setFileProviderAuthority("com.huantansheng.easyphotos.demo.fileprovider")
                         .setCount(9)
-                        .setPuzzleMenu(false)
                         .setCleanMenu(false)
                         .start(101);
                 break;
@@ -370,7 +367,6 @@ public class SampleActivity extends AppCompatActivity
 
                 EasyPhotos.createAlbum(this, true, false, GlideEngine.getInstance())
                         .setFileProviderAuthority("com.huantansheng.easyphotos.demo.fileprovider")
-                        .setPuzzleMenu(false)
                         .setCount(9)
                         .setSelectedPhotos(selectedPhotoList)//当传入已选中图片时，按照之前选中的顺序排序
 //                        .setSelectedPhotos(selectedPhotoList,false)//当传入已选中图片时，不按照之前选中的顺序排序
@@ -383,7 +379,6 @@ public class SampleActivity extends AppCompatActivity
 
                 EasyPhotos.createAlbum(this, false, true, GlideEngine.getInstance())
                         .setFileProviderAuthority("com.huantansheng.easyphotos.demo.fileprovider")
-                        .setPuzzleMenu(false)
                         .start(new SelectCallback() {
                             @Override
                             public void onResult(ArrayList<Photo> photos, boolean isOriginal) {
@@ -416,38 +411,6 @@ public class SampleActivity extends AppCompatActivity
                         });
 
                 break;
-
-            case R.id.puzzle:
-                EasyPhotos.createAlbum(this, false, false, GlideEngine.getInstance())
-                        .setCount(9)
-                        .setPuzzleMenu(false)
-                        .setFileProviderAuthority("com.huantansheng.easyphotos.demo.fileprovider")
-                        .start(new SelectCallback() {
-                            @Override
-                            public void onResult(ArrayList<Photo> photos, boolean isOriginal) {
-                                EasyPhotos.startPuzzleWithPhotos(SampleActivity.this, photos,
-                                        Environment.getExternalStorageDirectory().getAbsolutePath(), "AlbumBuilder", false, GlideEngine.getInstance(), new PuzzleCallback() {
-                                            @Override
-                                            public void onResult(Photo photo) {
-                                                selectedPhotoList.clear();
-                                                selectedPhotoList.add(photo);
-                                                adapter.notifyDataSetChanged();
-                                                rvImage.smoothScrollToPosition(0);
-                                            }
-
-                                            @Override
-                                            public void onCancel() {
-                                                Toast.makeText(SampleActivity.this, "Cancel",
-                                                        Toast.LENGTH_SHORT).show();
-                                            }
-                                        });
-                            }
-
-                            @Override
-                            public void onCancel() {
-                                Toast.makeText(SampleActivity.this, "Cancel", Toast.LENGTH_SHORT).show();
-                            }
-                        });
 
             case R.id.face_detection://人脸检测，目前仅支持正脸检测
                 //暂时不做了。会导致lib过大，而且并不稳定
@@ -553,10 +516,6 @@ public class SampleActivity extends AppCompatActivity
                 }
                 selectedPhotoList.clear();
                 selectedPhotoList.addAll(resultPhotos);
-
-                EasyPhotos.startPuzzleWithPhotos(this, selectedPhotoList,
-                        Environment.getExternalStorageDirectory().getAbsolutePath(),
-                        "AlbumBuilder", 103, false, GlideEngine.getInstance());
                 return;
             }
 

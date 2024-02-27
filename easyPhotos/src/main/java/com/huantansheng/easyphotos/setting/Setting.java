@@ -1,7 +1,8 @@
 package com.huantansheng.easyphotos.setting;
 
-import androidx.annotation.IntDef;
 import android.view.View;
+
+import androidx.annotation.IntDef;
 
 import com.huantansheng.easyphotos.constant.Type;
 import com.huantansheng.easyphotos.engine.ImageEngine;
@@ -38,7 +39,6 @@ public class Setting {
     public static boolean isShowCamera = false;
     public static int cameraLocation = 1;
     public static boolean onlyStartCamera = false;
-    public static boolean showPuzzleMenu = true;
     public static List<String> filterTypes = new ArrayList<>();
     public static boolean showGif = false;
     public static boolean showVideo = false;
@@ -81,7 +81,6 @@ public class Setting {
         cameraLocation = BOTTOM_RIGHT;
         isShowCamera = false;
         onlyStartCamera = false;
-        showPuzzleMenu = true;
         filterTypes = new ArrayList<>();
         showGif = false;
         showVideo = false;

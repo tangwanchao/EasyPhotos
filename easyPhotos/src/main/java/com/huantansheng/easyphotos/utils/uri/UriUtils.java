@@ -1,9 +1,7 @@
 package com.huantansheng.easyphotos.utils.uri;
 
 import android.annotation.SuppressLint;
-import android.content.ContentResolver;
 import android.content.ContentUris;
-import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
@@ -142,36 +140,5 @@ public class UriUtils {
      **/
     public static boolean isGooglePhotosUri(Uri uri) {
         return "com.google.android.apps.photos.content".equals(uri.getAuthority());
-    }
-
-    /**
-     * 判断是否是Google相册的图片，类似于content://com.google.android.apps.photos.contentprovider/0/1/mediakey:/local%3A821abd2f-9f8c-4931-bbe9-a975d1f5fabc/ORIGINAL/NONE/1075342619
-     **/
-    public static boolean isGooglePlayPhotosUri(Uri uri) {
-        return "com.google.android.apps.photos.contentprovider".equals(uri.getAuthority());
-    }
-
-    /**
-     * 图片路径转uri
-     */
-    public static Uri getUriByPath(Context context, String path) {
-        ContentResolver contentResolver = context.getContentResolver();
-        Uri contentUri = MediaStore.Files.getContentUri("external");
-        Cursor cursor = contentResolver.query(contentUri, new String[]{MediaStore.Files.FileColumns._ID},
-                MediaStore.Files.FileColumns.DATA + "=? ", new String[]{path},
-                null);
-        if (cursor != null && cursor.moveToFirst()) {
-            int id = cursor.getInt(cursor.getColumnIndex(MediaStore.MediaColumns._ID));
-            cursor.close();
-            return Uri.withAppendedPath(contentUri, "" + id);
-        } else {
-            if (new File(path).exists()) {
-                ContentValues values = new ContentValues();
-                values.put(MediaStore.Images.Media.DATA, path);
-                return contentResolver.insert(contentUri, values);
-            } else {
-                return null;
-            }
-        }
     }
 }

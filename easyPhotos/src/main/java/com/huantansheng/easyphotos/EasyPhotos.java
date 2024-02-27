@@ -10,21 +10,16 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 
 import com.huantansheng.easyphotos.Builder.AlbumBuilder;
-import com.huantansheng.easyphotos.callback.PuzzleCallback;
 import com.huantansheng.easyphotos.engine.ImageEngine;
 import com.huantansheng.easyphotos.models.ad.AdListener;
 import com.huantansheng.easyphotos.models.album.AlbumModel;
-import com.huantansheng.easyphotos.models.album.entity.Photo;
 import com.huantansheng.easyphotos.models.sticker.StickerModel;
 import com.huantansheng.easyphotos.models.sticker.entity.TextStickerData;
-import com.huantansheng.easyphotos.ui.PuzzleActivity;
 import com.huantansheng.easyphotos.utils.bitmap.BitmapUtils;
 import com.huantansheng.easyphotos.utils.bitmap.SaveBitmapCallBack;
 import com.huantansheng.easyphotos.utils.media.MediaScannerConnectionUtils;
-import com.huantansheng.easyphotos.utils.result.EasyResult;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -251,45 +246,6 @@ public class EasyPhotos {
     public static Bitmap createBitmapFromView(View view) {
         return BitmapUtils.createBitmapFromView(view);
     }
-
-    /**
-     * 启动拼图（最多对9张图片进行拼图）
-     *
-     * @param act                  上下文
-     * @param photos               图片集合（最多对9张图片进行拼图）
-     * @param puzzleSaveDirPath    拼图完成保存的文件夹全路径
-     * @param puzzleSaveNamePrefix 拼图完成保存的文件名前缀，最终格式：前缀+默认生成唯一数字标识+.png
-     * @param requestCode          请求code
-     * @param replaceCustom        单击替换拼图中的某张图片时，是否以startForResult的方式启动你的自定义界面，该界面与传进来的act
-     *                             为同一界面。false则在EasyPhotos内部完成，正常需求直接写false即可。
-     *                             true的情况适用于：用于拼图的图片集合中包含网络图片，是在你的act界面中获取并下载的（也可以直接用网络地址，不用下载后的本地地址，也就是可以不下载下来），而非单纯本地相册。举例：你的act中有两个按钮，一个指向本地相册，一个指向网络相册，用户在该界面任意选择，选择好图片后跳转到拼图界面，用户在拼图界面点击替换按钮，将会启动一个新的act界面，这时，act只让用户在网络相册和本地相册选择一张图片，选择好执行
-     *                             Intent intent = new Intent();
-     *                             intent.putParcelableArrayListExtra(AlbumBuilder.RESULT_PHOTOS
-     *                             , photos);
-     *                             act.setResult(RESULT_OK,intent); 并关闭act，回到拼图界面，完成替换。
-     * @param imageEngine          图片加载引擎的具体实现
-     */
-
-    public static void startPuzzleWithPhotos(Activity act, ArrayList<Photo> photos,
-                                             String puzzleSaveDirPath,
-                                             String puzzleSaveNamePrefix, int requestCode,
-                                             boolean replaceCustom,
-                                             @NonNull ImageEngine imageEngine) {
-        act.setResult(Activity.RESULT_OK);
-        PuzzleActivity.startWithPhotos(act, photos, puzzleSaveDirPath, puzzleSaveNamePrefix,
-                requestCode, replaceCustom, imageEngine);
-    }
-
-    public static void startPuzzleWithPhotos(FragmentActivity act, ArrayList<Photo> photos,
-                                             String puzzleSaveDirPath,
-                                             String puzzleSaveNamePrefix, boolean replaceCustom,
-                                             @NonNull ImageEngine imageEngine,
-                                             PuzzleCallback callback) {
-        act.setResult(Activity.RESULT_OK);
-        EasyResult.get(act).startPuzzleWithPhotos(photos, puzzleSaveDirPath, puzzleSaveNamePrefix
-                , replaceCustom, imageEngine, callback);
-    }
-
 
     //**************更新媒体库***********************
 

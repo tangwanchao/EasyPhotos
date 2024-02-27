@@ -401,18 +401,6 @@ public class AlbumBuilder {
         return AlbumBuilder.this;
     }
 
-
-    /**
-     * 是否显示拼图按钮
-     *
-     * @param shouldShow 是否显示
-     * @return AlbumBuilder
-     */
-    public AlbumBuilder setPuzzleMenu(boolean shouldShow) {
-        Setting.showPuzzleMenu = shouldShow;
-        return AlbumBuilder.this;
-    }
-
     /**
      * 只显示Video
      *
@@ -513,7 +501,6 @@ public class AlbumBuilder {
         if (Setting.isOnlyVideo()) {
             //只选择视频 暂不支持拍照/拼图等
             Setting.isShowCamera = false;
-            Setting.showPuzzleMenu = false;
             Setting.showGif = false;
             Setting.showVideo = true;
         }

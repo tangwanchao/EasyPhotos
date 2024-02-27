@@ -150,7 +150,7 @@ public class EasyPhotosActivity extends AppCompatActivity implements AlbumItemsA
         hideActionBar();
         adaptationStatusBar();
         loadingDialog = LoadingDialog.get(this);
-        isQ = Build.VERSION.SDK_INT == Build.VERSION_CODES.Q;
+        isQ = Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q;
         if (!Setting.onlyStartCamera && null == Setting.imageEngine) {
             finish();
             return;
@@ -184,7 +184,7 @@ public class EasyPhotosActivity extends AppCompatActivity implements AlbumItemsA
         if (Setting.isOnlyVideo()) {
             tvTitle.setText(R.string.video_selection_easy_photos);
         }
-        findViewById(R.id.iv_second_menu).setVisibility(Setting.showPuzzleMenu || Setting.showCleanMenu || Setting.showOriginalMenu ? View.VISIBLE : View.GONE);
+        findViewById(R.id.iv_second_menu).setVisibility(Setting.showCleanMenu || Setting.showOriginalMenu ? View.VISIBLE : View.GONE);
         setClick(R.id.iv_back);
     }
 
@@ -225,8 +225,11 @@ public class EasyPhotosActivity extends AppCompatActivity implements AlbumItemsA
                 list.add(Manifest.permission.READ_MEDIA_IMAGES);
                 list.add(Manifest.permission.READ_MEDIA_VIDEO);
             }
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q){
+            list.add(Manifest.permission.READ_EXTERNAL_STORAGE);
         } else {
             list.add(Manifest.permission.READ_EXTERNAL_STORAGE);
+            list.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
         }
         return list.toArray(new String[0]);
     }
@@ -701,9 +704,6 @@ public class EasyPhotosActivity extends AppCompatActivity implements AlbumItemsA
         if (Setting.isShowCamera && Setting.isBottomRightCamera()) {
             ivCamera.setVisibility(View.VISIBLE);
         }
-        if (!Setting.showPuzzleMenu) {
-            findViewById(R.id.tv_puzzle).setVisibility(View.GONE);
-        }
         mSecondMenus = findViewById(R.id.m_second_level_menu);
         int columns = getResources().getInteger(R.integer.photos_columns_easy_photos);
         tvAlbumItems = findViewById(R.id.tv_album_items);
@@ -749,7 +749,7 @@ public class EasyPhotosActivity extends AppCompatActivity implements AlbumItemsA
 
         initAlbumItems();
         shouldShowMenuDone();
-        setClick(R.id.iv_album_items, R.id.tv_clear, R.id.iv_second_menu, R.id.tv_puzzle);
+        setClick(R.id.iv_album_items, R.id.tv_clear, R.id.iv_second_menu);
         setClick(tvAlbumItems, rootViewAlbumItems, tvDone, tvOriginal, tvPreview, ivCamera);
 
     }
@@ -813,9 +813,6 @@ public class EasyPhotosActivity extends AppCompatActivity implements AlbumItemsA
             launchCamera(Code.REQUEST_CAMERA);
         } else if (R.id.iv_second_menu == id) {
             processSecondMenu();
-        } else if (R.id.tv_puzzle == id) {
-            processSecondMenu();
-            PuzzleSelectorActivity.start(this);
         }
     }
 

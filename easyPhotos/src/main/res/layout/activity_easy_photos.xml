@@ -92,21 +92,6 @@
                 android:textColor="@color/easy_photos_fg_primary" />
 
             <TextView
-                android:id="@+id/tv_puzzle"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:layout_weight="1"
-                android:background="@drawable/bg_second_level_menu_easy_photos"
-                android:clickable="true"
-                android:focusable="true"
-                android:gravity="center"
-                android:minWidth="80dp"
-                android:padding="8dp"
-                android:text="@string/puzzle_easy_photos"
-                android:textColor="@color/easy_photos_fg_primary" />
-
-            <TextView
                 android:id="@+id/tv_clear"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
