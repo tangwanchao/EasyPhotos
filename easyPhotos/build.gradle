@@ -2,7 +2,8 @@ apply plugin: 'com.android.library'
 group = 'com.github.HuanTanSheng'
 
 android {
-    compileSdkVersion 34
+    compileSdk 34
+    namespace = "com.huantansheng.easyphotos"
 
     defaultConfig {
         minSdkVersion 21
@@ -29,7 +30,7 @@ dependencies {
 // 打包源码
 task sourcesJar(type: Jar) {
     from android.sourceSets.main.java.srcDirs
-    classifier = 'sources'
+    archiveClassifier = 'sources'
 }
 
 //制作文档

@@ -1,7 +1,8 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 34
+    compileSdk 34
+    namespace = "com.huantansheng.easyphotos.demo"
 
     defaultConfig {
         applicationId "com.huantansheng.easyphotos.demo"
