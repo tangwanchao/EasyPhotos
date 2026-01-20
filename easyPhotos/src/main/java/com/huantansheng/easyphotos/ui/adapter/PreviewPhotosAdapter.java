@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.FileProvider;
@@ -124,14 +125,36 @@ public class PreviewPhotosAdapter extends RecyclerView.Adapter<PreviewPhotosAdap
     }
 
     private void toPlayVideo(View v, Uri uri, String type) {
-        Context context = v.getContext();
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+        try {
+            Context context = v.getContext();
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+            }
+            intent.setDataAndType(uri, type);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(intent);
+        } catch (Throwable th) {
+            toPlayVideoSimple(v, uri, type);
         }
-        intent.setDataAndType(uri, type);
-        context.startActivity(intent);
+    }
+
+    // android 15
+    private void toPlayVideoSimple(View v, Uri uri, String type) {
+        try {
+            Context context = v.getContext();
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setDataAndType(uri, type);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(intent);
+        } catch (Throwable th) {
+            try {
+                Toast.makeText(v.getContext(), "播放视频失败", Toast.LENGTH_LONG).show();
+            } catch (Throwable t) {
+                // ignore
+            }
+        }
     }
 
     private Uri getUri(Context context, String path, Intent intent) {
