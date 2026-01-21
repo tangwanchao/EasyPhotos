@@ -13,8 +13,7 @@
     <FrameLayout
         android:id="@+id/m_bar_root_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fitsSystemWindows="true">
+        android:layout_height="match_parent">
 
         <FrameLayout
             android:id="@+id/m_top_bar_layout"
@@ -30,7 +29,6 @@
                 android:layout_gravity="top"
                 android:background="@color/easy_photos_bar_primary"
                 android:clickable="true"
-                android:fitsSystemWindows="true"
                 android:focusable="true">
 
                 <ImageView
@@ -92,7 +90,6 @@
             android:layout_gravity="bottom"
             android:background="@color/easy_photos_bar_primary_translation"
             android:clickable="true"
-            android:fitsSystemWindows="true"
             android:focusable="true">
 
             <FrameLayout

@@ -37,6 +37,8 @@ dependencies {
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
     implementation 'com.davemorrissey.labs:subsampling-scale-image-view-androidx:3.10.0'
     implementation 'com.github.chrisbanes:PhotoView:2.3.0'
+    implementation "androidx.activity:activity:1.8.2"
+    implementation(platform("org.jetbrains.kotlin:kotlin-bom:1.8.22"))
 }
 
 
